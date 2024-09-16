@@ -1,0 +1,8 @@
+---
+- name: Premier playbook
+  hosts: debiancli
+  gather_facts: false
+
+  tasks:
+    - name: Appel au module ping
+      ping:
