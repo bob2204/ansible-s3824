@@ -1,0 +1,10 @@
+---
+- name: Micro-TP n°2
+  hosts: all
+  gather_facts: false
+
+  tasks:
+    - name: Copie data.txt
+      ansible.builtin.copy:
+        src: data.txt
+        dest: /tmp
