@@ -6,3 +6,4 @@
   tasks:
     - name: Appel au module ping
       ping:
+        data: OK
