@@ -13,3 +13,12 @@
       loop_control:
         loop_var: data
         index_var: idx
+
+    - name: Boucle sur une variable liste
+      ansible.builtin.debug:
+        msg: "IP n°{{ idx+1 }}: {{ ip_addr }}"
+      loop: "{{ ansible_all_ipv4_addresses }}"
+      loop_control:
+        loop_var: ip_addr
+        index_var: idx
+      when: ip_addr | regex_search('^192') != none
