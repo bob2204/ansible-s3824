@@ -2,6 +2,13 @@
 - name: Illustration de la clause loop
   hosts: debiancli
 
+  vars:
+    couleurs:
+      - fr: vert
+        en: green
+      - fr: marron
+        en: brown
+
   tasks:
     - name: Boucle simple
       ansible.builtin.debug:
@@ -22,3 +29,9 @@
         loop_var: ip_addr
         index_var: idx
       when: ip_addr | regex_search('^192') != none
+
+
+    - name: Boucle sur une liste de dictionnaires
+      ansible.builtin.debug:
+        msg: "{{ item.fr }} -> {{ item.en }}"
+      loop: "{{ couleurs }}"
