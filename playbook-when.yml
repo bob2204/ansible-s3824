@@ -1,0 +1,9 @@
+---
+- name: Clauses when
+  hosts: all
+
+  tasks:
+    - name: Tâche limitée à la distribution Debian
+      ansible.builtin.debug:
+        msg: "Distribution ({{ ansible_distribution }}) supportée"
+      when: ansible_distribution == 'Debian'
