@@ -10,3 +10,18 @@
         update_cache: true
         name: "{{ redis_package_name }}"
         state: present
+
+    - name: Reconfiguration du service redis
+      when: inventory_hostname == 'debiancli'
+      block:
+        - name: Rendre le service accessible depuis l'extérieur
+          ansible.builtin.lineinfile:
+            regex: ^bind 127.0.0.1
+            line: "bind {{ ansible_host }}"
+            path: /etc/redis/redis.conf
+            backup: true
+
+        - name: Redémarrage du service redis
+          ansible.builtin.systemd_service:
+            name: redis-server.service
+            state: restarted
