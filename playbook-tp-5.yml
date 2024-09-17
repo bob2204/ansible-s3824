@@ -1,0 +1,21 @@
+---
+- name: Micro-TP n°5
+  hosts: all
+
+  tasks:
+    - name: Champ nom du fichier /tmp/infos.txt
+      ansible.builtin.lineinfile:
+        line: "Nom: {{ inventory_hostname }}"
+        path: /tmp/infos.txt
+        create: true
+        mode: "0644"
+
+    - name: Champ distribution du fichier /tmp/infos.txt
+      ansible.builtin.lineinfile:
+        line: "Distribution: {{ ansible_distribution }}"
+        path: /tmp/infos.txt
+
+    - name: Champ version du fichier /tmp/infos.txt
+      ansible.builtin.lineinfile:
+        line: "Version: {{ ansible_distribution_major_version }}"
+        path: /tmp/infos.txt
