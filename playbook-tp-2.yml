@@ -8,3 +8,10 @@
       ansible.builtin.copy:
         src: data.txt
         dest: /tmp
+
+    - name: Création fichier /var/log/tp-2.txt
+      ansible.builtin.lineinfile:
+        line: Formation Ansible
+        path: /var/log/tp-2.txt
+        create: true
+      become: true
