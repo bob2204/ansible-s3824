@@ -1,0 +1,12 @@
+---
+- name: Illustration de la clause loop
+  hosts: debiancli
+
+  tasks:
+    - name: Boucle simple
+      ansible.builtin.debug:
+        msg: "Valeur: {{ item }}"
+      loop:
+        - valeur_1
+        - valeur_2
+        - valeur_3
