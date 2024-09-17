@@ -1,0 +1,20 @@
+---
+- name: Les variables
+  hosts: all
+  gather_facts: false
+
+  vars:
+    stage: PHP
+
+  tasks:
+    - name: Inclusion du fichier stage.yml
+      ansible.builtin.include_vars:
+        file: stage.yml
+
+    - name: Affichage de la variable stage
+      ansible.builtin.debug:
+        msg: "Variable stage: {{ stage }}"
+
+    - name: Affichage de la variable jours
+      ansible.builtin.debug:
+        msg: "Variable jours: {{ jours | default(2)}}"
