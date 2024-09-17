@@ -1,7 +1,6 @@
 ---
 - name: Installation d'un service redis sur les cibles Debian
   hosts: all
-  gather_facts: false
   become: true
 
   tasks:
@@ -14,10 +13,15 @@
     - name: Rendre le service accessible depuis l'extérieur
       ansible.builtin.lineinfile:
         regex: ^bind 127.0.0.1
-        line: "bind {{ ansible_host }}"
+        line: "bind {{ ip_addr }}"
         path: /etc/redis/redis.conf
         backup: true
-      when: inventory_hostname == 'debiancli'
+      when:
+        - inventory_hostname == 'debiancli'
+        - ip_addr | regex_search('^192.168') != none
+      loop: "{{ ansible_all_ipv4_addresses }}"
+      loop_control:
+        loop_var: ip_addr
       notify: restart_redis
 
 
