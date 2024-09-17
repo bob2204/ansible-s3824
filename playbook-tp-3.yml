@@ -1,0 +1,12 @@
+---
+- name: Installation d'un service redis
+  hosts: debiancli
+  gather_facts: false
+  become: true
+
+  tasks:
+    - name: Installation de redis
+      ansible.builtin.package:
+        update_cache: true
+        name: redis-server
+        state: present
