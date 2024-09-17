@@ -7,5 +7,16 @@
       ansible.builtin.debug:
         msg: "Distribution ({{ ansible_distribution }}) supportée"
       when:
-        - ansible_distribution in ('Debian','Ubuntu')
+        - ansible_distribution | lower in ('debian','ubuntu')
         - ansible_architecture == 'x86_64'
+
+    - name: Bloc when
+      block:
+      - name: Tâche test I
+        ansible.builtin.debug:
+          msg: "Test I"
+
+      - name: Tâche test II
+        ansible.builtin.debug:
+          msg: "Test II"
+      when: ansible_distribution_version | int == 11
