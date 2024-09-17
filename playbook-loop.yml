@@ -5,8 +5,11 @@
   tasks:
     - name: Boucle simple
       ansible.builtin.debug:
-        msg: "Valeur: {{ item }}"
+        msg: "Valeur n°{{ idx+1 }}: {{ data }}"
       loop:
         - valeur_1
         - valeur_2
         - valeur_3
+      loop_control:
+        loop_var: data
+        index_var: idx
