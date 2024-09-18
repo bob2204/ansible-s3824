@@ -1,0 +1,12 @@
+---
+- name: Quelques lookups
+  hosts: debiancli
+
+  tasks:
+    - name: Lookup DNS
+      ansible.builtin.debug:
+        msg: "dawan.fr: {{ lookup('dig','dawan.fr') }}"
+
+    - name: Lookup ENV
+      ansible.builtin.debug:
+        msg: "SHELL: {{ lookup('env','SHELL') }}"
