@@ -1,0 +1,16 @@
+---
+- name: Gestion des codes retour
+  hosts: debiancli
+  gather_facts: false
+
+  tasks:
+    - name: grep {{ user }} /etc/passwd
+      ansible.builtin.shell: grep "{{ user }}" /etc/passwd
+      changed_when: false
+      register: result
+      failed_when: result.rc > 1
+
+    - name: Variable result
+      ansible.builtin.debug:
+        var: result.rc
+
