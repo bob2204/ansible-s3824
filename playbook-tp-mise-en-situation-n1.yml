@@ -1,0 +1,77 @@
+---
+- name: Mise en situation n°1
+  hosts: all
+  become: true
+
+  tasks:
+    - name: Installation et configuration du service nginx sur debiancli
+      block:
+        - name: Installation
+          ansible.builtin.package:
+            name: nginx
+            state: present
+
+        - name: Configuration du service
+          ansible.builtin.systemd:
+            name: nginx
+            enabled: true
+            state: started
+
+        - name: Copie du fichier de configuration
+          ansible.builtin.copy:
+            src: nginx/default
+            dest: /etc/nginx/sites-available 
+          notify: restart_nginx
+      when: inventory_hostname == 'debiancli'
+
+    - name: Installation et configuration du service php-fpm sur fedoracli
+      block:
+        - name: Installation
+          ansible.builtin.package:
+            name: php-fpm
+            state: present
+
+        - name: Configuration du service
+          ansible.builtin.systemd:
+            name: php-fpm
+            enabled: true
+            state: started
+
+        - name: Configuration php
+          ansible.builtin.lineinfile:
+            regex: ^listen =
+            line: "listen = {{ ansible_host }}:9000"
+            path: /etc/php-fpm.d/www.conf
+          notify: restart_php
+
+        - name: Configuration php
+          ansible.builtin.lineinfile:
+            regex: ^listen.allowed_clients
+            state: absent
+            path: /etc/php-fpm.d/www.conf
+          notify: restart_php
+
+        - name: Désactivation du firewall
+          ansible.builtin.systemd:
+            name: firewalld
+            state: stopped
+            enabled: false
+      when: inventory_hostname == 'fedoracli'
+
+    - name: Copie des fichiers de site
+      ansible.builtin.copy:
+        src: site/
+        dest: "{{ document_root }}"
+
+  handlers:
+    - name: Redémarrage de nginx
+      ansible.builtin.systemd:
+        name: nginx
+        state: restarted
+      listen: restart_nginx
+
+    - name: Redémarrage de php
+      ansible.builtin.systemd:
+        name: php-fpm
+        state: restarted
+      listen: restart_php
