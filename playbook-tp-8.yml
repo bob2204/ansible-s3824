@@ -1,0 +1,18 @@
+---
+- name: Création de comptes sur les cibles
+  hosts: all
+  become: true
+
+  vars_files:
+    - logins.yml
+
+  tasks:
+    - name: Création des comptes
+      ansible.builtin.user:
+        name: "{{ user.login }}"
+        shell: "{{ user.shell }}"
+        uid: "{{ user.uid }}"
+        password: "{{ user.password | password_hash('sha256','mnrOSU78tvo1') }}"
+      loop: "{{ logins }}"
+      loop_control:
+        loop_var: user
