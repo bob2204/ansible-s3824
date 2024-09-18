@@ -55,8 +55,9 @@ server {
 	#
 	location ~ \.php$ {
 		include snippets/fastcgi-php.conf;
-		fastcgi_pass 127.0.0.1:9000;
+		fastcgi_pass 192.168.56.246:9000;
 		fastcgi_param  SCRIPT_FILENAME  /var/www/html$fastcgi_script_name;
+		include fastcgi_params;
 	}
 
 	# deny access to .htaccess files, if Apache's document root
