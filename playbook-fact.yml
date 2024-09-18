@@ -1,0 +1,8 @@
+---
+- name: Effet de la mise en cache des faits
+  hosts: all
+
+  tasks:
+    - name: Tâche bidon
+      ansible.builtin.debug:
+        msg: "Blablabla..."
