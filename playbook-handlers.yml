@@ -1,0 +1,23 @@
+---
+- name: Retour sur les handlers
+  hosts: debiancli
+  gather_facts: false
+
+  tasks:
+    - name: Tâche bidon
+      ansible.builtin.debug:
+        msg: "Changed true"
+      changed_when: true
+      notify: handler_1
+
+    - meta: flush_handlers
+
+    - name: Tâche finale
+      ansible.builtin.debug:
+        msg: "Fin du traitement"
+
+  handlers:
+    - name: Handler 1
+      ansible.builtin.debug:
+        msg: "Handler 1"
+      listen: handler_1
