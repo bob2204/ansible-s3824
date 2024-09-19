@@ -1,0 +1,4 @@
+---
+- name: ansible-role
+  src: https://github.com/bob2204/ansible-role
+  scm: git
