@@ -1,0 +1,8 @@
+---
+- name: Utilisation du rôle demo
+  hosts: debiancli
+  gather_facts: false
+
+  roles:
+    - role: demo
+      stage: Docker
