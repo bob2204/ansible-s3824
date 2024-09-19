@@ -1,0 +1,22 @@
+---
+- name: Variable magique hostvars
+  hosts: all
+
+  tasks:
+    - name: Variable hostvars pour debiancli
+      ansible.builtin.debug:
+        var: hostvars
+      when: inventory_hostname == "debiancli"
+
+    - name: IP de fedoracli
+      ansible.builtin.set_fact:
+        php_server_addr: "{{ item }}"
+      when:
+        - inventory_hostname == "debiancli"
+        - item | regex_search('^192.168') != none 
+      loop: "{{ hostvars.fedoracli.ansible_all_ipv4_addresses }}"
+
+    - name: Variable php_server_addr
+      ansible.builtin.debug:
+        msg: "php_server_addr: {{ php_server_addr }}"
+      when: inventory_hostname == "debiancli"
