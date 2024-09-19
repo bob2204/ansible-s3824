@@ -3,8 +3,18 @@
   hosts: all
   become: true
 
+  pre_tasks:
+    - name: IP de fedoracli
+      ansible.builtin.set_fact:
+        php_srv_addr: "{{ item }}"
+      when:
+        - inventory_hostname == "debiancli"
+        - item | regex_search('^192.168') != none
+      loop: "{{ hostvars.fedoracli.ansible_all_ipv4_addresses }}"
+
   roles:
     - role: nginx
+      php_server_addr: "{{ php_srv_addr }}"
       when: inventory_hostname == 'debiancli'
     - role: php-fpm
       when: inventory_hostname == 'fedoracli'
