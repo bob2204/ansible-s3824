@@ -1,0 +1,32 @@
+---
+# tasks file for roles.d/php-fpm
+- name: Installation
+  ansible.builtin.package:
+    name: php-fpm
+    state: present
+
+- name: Configuration du service
+  ansible.builtin.systemd:
+    name: php-fpm
+    enabled: true
+    state: started
+
+- name: Configuration php
+  ansible.builtin.lineinfile:
+    regex: ^listen =
+    line: "listen = {{ ansible_host }}:9000"
+    path: /etc/php-fpm.d/www.conf
+  notify: restart_php
+
+- name: Configuration php
+  ansible.builtin.lineinfile:
+    regex: ^listen.allowed_clients
+    state: absent
+    path: /etc/php-fpm.d/www.conf
+  notify: restart_php
+
+- name: Désactivation du firewall
+  ansible.builtin.systemd:
+    name: firewalld
+    state: stopped
+    enabled: false

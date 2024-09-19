@@ -1,0 +1,7 @@
+---
+# handlers file for roles.d/php-fpm
+- name: Redémarrage de php
+  ansible.builtin.systemd:
+    name: php-fpm
+    state: restarted
+  listen: restart_php
