@@ -10,3 +10,13 @@
     - name: Lookup ENV
       ansible.builtin.debug:
         msg: "SHELL: {{ lookup('env','SHELL') }}"
+
+    - name: Lookup FILE
+      ansible.builtin.debug:
+        msg: "data.txt: {{ lookup('file','files/data.txt').split('\n')[-2] }}"
+
+    - name: Lecture d'un fichier (tableau) ligne à ligne (élément par élément)
+      ansible.builtin.debug:
+        msg: "{{ item }}"
+      loop: "{{ lookup('file','files/data.txt').split('\n') }}"
+
