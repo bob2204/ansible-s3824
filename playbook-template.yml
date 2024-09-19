@@ -1,0 +1,9 @@
+---
+- name: les templates
+  hosts: debiancli
+
+  tasks:
+    - name: Template
+      ansible.builtin.template:
+        src: test.txt.j2
+        dest: /tmp/test.txt
