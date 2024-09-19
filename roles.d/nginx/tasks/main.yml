@@ -2,6 +2,6 @@
 # tasks file for roles.d/nginx
 
 - name: Include nginx-install
-  ansible.builtin.include_tasks:
+  ansible.builtin.import_tasks:
     file: nginx-install.yml
   when: ansible_os_family == 'Debian' 
