@@ -6,11 +6,9 @@
   pre_tasks:
     - name: IP de fedoracli
       ansible.builtin.set_fact:
-        php_srv_addr: "{{ item }}"
+        php_srv_addr: "{{ hostvars.fedoracli.ansible_enp0s8.ipv4.address }}"
       when:
         - inventory_hostname == "debiancli"
-        - item | regex_search('^192.168') != none
-      loop: "{{ hostvars.fedoracli.ansible_all_ipv4_addresses }}"
 
   roles:
     - role: nginx
@@ -18,6 +16,15 @@
       when: inventory_hostname == 'debiancli'
     - role: php-fpm
       when: inventory_hostname == 'fedoracli'
+    - role: geerlingguy.mysql
+      mysql_databases:
+        - name: stage
+      mysql_users:
+        - name: bob
+          password: azerty
+          priv: "stage.*:ALL"
+      when: inventory_hostname == "debiancli"
+      tags: install_mariadb
 
   post_tasks:
     - name: Copie des fichiers de site
