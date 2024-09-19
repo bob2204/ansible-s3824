@@ -1,0 +1,5 @@
+    - name: Redémarrage de nginx
+      ansible.builtin.systemd:
+        name: nginx
+        state: restarted
+      listen: restart_nginx
