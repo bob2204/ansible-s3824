@@ -1,0 +1,51 @@
+---
+- name: Acte I
+  hosts: all
+  gather_facts: false
+
+  tasks:
+    - name: Tâche I
+      ansible.builtin.debug:
+        msg: "Tâche I"
+      tags:
+        - t1
+        - t12
+
+    - name: Tâche II
+      ansible.builtin.debug:
+        msg: "Tâche II"
+
+    - name: Tâche III
+      ansible.builtin.debug:
+        msg: "Tâche III"
+      tags: never
+
+    - name: Tâche IV
+      ansible.builtin.debug:
+        msg: "Tâche IV"
+      tags: always
+
+    - name: Tâche V
+      ansible.builtin.debug:
+        msg: "Tâche V"
+      tags: t12
+
+    - name: Tâche VI
+      ansible.builtin.debug:
+        msg: "Tâche VI"
+      tags: t6
+
+
+- name: Acte II
+  hosts: all
+  gather_facts: false
+  tags: acte-II
+
+  tasks:
+    - name: Tâche I
+      ansible.builtin.debug:
+        msg: "Tâche I"
+
+    - name: Tâche II
+      ansible.builtin.debug:
+        msg: "Tâche II"
