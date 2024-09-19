@@ -6,50 +6,11 @@
   roles:
     - role: nginx
       when: inventory_hostname == 'debiancli'
-
-  post_tasks:
-    - name: Installation et configuration du service php-fpm sur fedoracli
-      block:
-        - name: Installation
-          ansible.builtin.package:
-            name: php-fpm
-            state: present
-
-        - name: Configuration du service
-          ansible.builtin.systemd:
-            name: php-fpm
-            enabled: true
-            state: started
-
-        - name: Configuration php
-          ansible.builtin.lineinfile:
-            regex: ^listen =
-            line: "listen = {{ ansible_host }}:9000"
-            path: /etc/php-fpm.d/www.conf
-          notify: restart_php
-
-        - name: Configuration php
-          ansible.builtin.lineinfile:
-            regex: ^listen.allowed_clients
-            state: absent
-            path: /etc/php-fpm.d/www.conf
-          notify: restart_php
-
-        - name: Désactivation du firewall
-          ansible.builtin.systemd:
-            name: firewalld
-            state: stopped
-            enabled: false
+    - role: php-fpm
       when: inventory_hostname == 'fedoracli'
 
+  post_tasks:
     - name: Copie des fichiers de site
       ansible.builtin.copy:
         src: site/
         dest: "{{ document_root }}"
-
-  handlers:
-    - name: Redémarrage de php
-      ansible.builtin.systemd:
-        name: php-fpm
-        state: restarted
-      listen: restart_php
