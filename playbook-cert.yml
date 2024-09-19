@@ -1,0 +1,22 @@
+---
+- name: Base64 et OpenSSL
+  hosts: localhost
+  gather_facts: false
+
+  vars_files:
+    - certificate.yml
+
+  tasks:
+    - name: Décodage base64
+      ansible.builtin.debug:
+        msg: "Cert: {{ cert | b64decode }}"
+
+    - name: Affichage certificat
+      community.crypto.x509_certificate_info:
+        content: "{{ cert | b64decode }}"
+      register: certlog
+
+    - name: Affichage JSON du certificat
+      ansible.builtin.debug:
+        msg: "{{ certlog.not_after }}"
+
