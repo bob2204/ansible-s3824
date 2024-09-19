@@ -1,0 +1,37 @@
+---
+- name: Mise en situation n°1
+  hosts: all
+  become: true
+
+  tasks:
+    - name: Tâche bidon
+      ansible.builtin.debug:
+        msg: "Tâche bidon"
+
+    - name: Installation et configuration du service nginx sur debiancli
+      ansible.builtin.include_tasks:
+        file: nginx-install.yml
+      when: inventory_hostname == 'debiancli'
+
+    - name: Installation et configuration du service php-fpm sur fedoracli
+      ansible.builtin.include_tasks:
+        file: php-fpm-install.yml
+      when: inventory_hostname == 'fedoracli'
+
+    - name: Copie des fichiers de site
+      ansible.builtin.copy:
+        src: site/
+        dest: "{{ document_root }}"
+
+  handlers:
+    - name: Redémarrage de nginx
+      ansible.builtin.systemd:
+        name: nginx
+        state: restarted
+      listen: restart_nginx
+
+    - name: Redémarrage de php
+      ansible.builtin.systemd:
+        name: php-fpm
+        state: restarted
+      listen: restart_php
