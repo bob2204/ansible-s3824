@@ -2,6 +2,19 @@ logins:
   - login: bob
     shell: /bin/bash
     uid: 2000
+    ssh_copy_id: false
+    password: azerty
   - login: curt
     shell: /bin/bash
     uid: 2500
+    ssh_copy_id: true
+    password: azerty
+  - login: zoe
+    shell: /bin/bash
+    uid: 3000
+    password: azerty
+  - login: loe
+    shell: /bin/bash
+    uid: 2001
+    password: qwerty
+    ssh_copy_id: true

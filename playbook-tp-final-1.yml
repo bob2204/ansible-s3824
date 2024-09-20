@@ -1,0 +1,17 @@
+---
+- name: Création de comptes sur les cibles
+  hosts: all
+  become: true
+
+  vars_files:
+    - logins.yml
+
+  tasks:
+    - name: Création des comptes
+      ansible.builtin.include_tasks:
+        file: tp-final-tasks.yml
+      loop: "{{ logins }}"
+      loop_control:
+        loop_var: user
+
+

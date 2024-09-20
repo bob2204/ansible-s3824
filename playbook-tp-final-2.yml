@@ -1,0 +1,10 @@
+---
+- name: Création de comptes sur les cibles
+  hosts: all
+  become: true
+
+  vars_files:
+    - logins.yml
+
+  roles:
+    - role: tp-final

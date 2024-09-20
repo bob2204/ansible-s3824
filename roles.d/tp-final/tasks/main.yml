@@ -1,0 +1,9 @@
+---
+# tasks file for roles.d/tp-final
+
+- name: Création des comptes
+  ansible.builtin.include_tasks:
+    file: tp-final-tasks.yml
+  loop: "{{ logins }}"
+  loop_control:
+    loop_var: user

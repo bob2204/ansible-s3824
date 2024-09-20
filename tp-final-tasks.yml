@@ -1,0 +1,19 @@
+    - name: Création des comptes
+      ansible.builtin.user:
+        name: "{{ user.login }}"
+        shell: "{{ user.shell }}"
+        uid: "{{ user.uid }}"
+        password: "{{ user.password | password_hash('sha256','mnrOSU78tvo1') }}"
+
+    - name: Transfert clé publique si demandé
+      block:
+        - name: Récupération de la clé publique
+          ansible.builtin.set_fact:
+            pubkey: "{{ lookup('file','/home/stagiaire/.ssh/id_ed25519.pub') }}"
+        - name: Transfert de la clé publique
+          ansible.posix.authorized_key:
+            key: "{{ pubkey }}"
+            user: "{{ user.login }}"
+      when:
+        - user.ssh_copy_id is defined
+        - user.ssh_copy_id == True
